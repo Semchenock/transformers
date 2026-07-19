@@ -30,3 +30,6 @@ models/
 
 # Generated attention heatmaps
 attention_*.png
+
+# Fine-tuned model weights (~250 MB)
+fine_tuned_model/
