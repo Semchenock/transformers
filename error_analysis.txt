@@ -1,0 +1,76 @@
+=== АНАЛИЗ ОШИБОК ===
+
+Всего примеров: 600
+Всего ошибок: 47 (7.8%)
+False Positives (сказали positive, было negative): 27
+False Negatives (сказали negative, было positive): 20
+
+--- Длина текстов ---
+Средняя длина ошибочных текстов: 50 симв. (9.3 слов)
+Средняя длина всех текстов:      52 симв. (9.3 слов)
+
+--- Уверенность модели ---
+Средняя уверенность на верных предсказаниях:    0.953
+Средняя уверенность на ошибочных предсказаниях: 0.870
+Ошибок с уверенностью > 0.9: 27 из 47
+
+=== ПРИМЕРЫ FALSE POSITIVES (сказали good, а было bad) ===
+
+Текст: there is plenty of room for editing , and
+Истинный: negative, Предсказан: positive, уверенность 0.970
+
+Текст: fit all of pootie tang in between its punchlines
+Истинный: negative, Предсказан: positive, уверенность 0.970
+
+Текст: stifling morality tale
+Истинный: negative, Предсказан: positive, уверенность 0.976
+
+Текст: restage the whole thing
+Истинный: negative, Предсказан: positive, уверенность 0.600
+
+Текст: if routine action and jokes like this are your cup of tea
+Истинный: negative, Предсказан: positive, уверенность 0.957
+
+=== ПРИМЕРЫ FALSE NEGATIVES (сказали bad, а было good) ===
+
+Текст: that rival vintage looney tunes for the most creative mayhem in a brief amount of time
+Истинный: positive, Предсказан: negative, уверенность 0.708
+
+Текст: the last metro )
+Истинный: positive, Предсказан: negative, уверенность 0.965
+
+Текст: that most frightening of all movies
+Истинный: positive, Предсказан: negative, уверенность 0.973
+
+Текст: to watch too many barney videos
+Истинный: positive, Предсказан: negative, уверенность 0.994
+
+Текст: ` red shoe diaries
+Истинный: positive, Предсказан: negative, уверенность 0.666
+
+
+=== ТРУДНЫЕ ПРИМЕРЫ (ошиблись все модели): 18 ===
+
+Текст: that most frightening of all movies
+Истинный: positive
+
+Текст: stifling morality tale
+Истинный: negative
+
+Текст: to watch too many barney videos
+Истинный: positive
+
+Текст: jay russell
+Истинный: negative
+
+Текст: too good to be bad
+Истинный: positive
+
+
+=== НАБЛЮДЕНИЯ ===
+1. Ошибок 47 из 600 (7.8%): FP=27, FN=20 — перекос в сторону ложного positive.
+2. Длина текста НЕ объясняет ошибки: доля ошибок по корзинам длины 5.9-10.1% без тренда.
+3. 27 из 47 ошибок сделаны с уверенностью > 0.9 — модель переуверена, отсечь ошибки по порогу нельзя, нужна калибровка.
+4. Разрыв уверенности мал: 0.953 на верных против 0.870 на ошибочных.
+5. 18 примеров провалили все три модели. Типы: требуется доменное знание ("most frightening" = похвала для хоррора), идиомы ("too good to be bad"), и фрагменты без тональности ("jay russell" — имя режиссёра).
+6. SST-2 состоит из фраз-фрагментов рецензий, метка унаследована из контекста, которого в самом фрагменте нет. Часть ошибок неустранима — это потолок разметки.
