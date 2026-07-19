@@ -27,3 +27,6 @@ ENV/
 
 # Trained model artifacts
 models/
+
+# Generated attention heatmaps
+attention_*.png
