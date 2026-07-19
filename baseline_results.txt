@@ -1,0 +1,19 @@
+Baseline без обучения трансформера (День 4)
+=============================================
+Модель (заморожена):  distilbert-base-uncased
+Признаки:             CLS-эмбеддинги, last_hidden_state[:, 0, :]
+Классификатор:        LogisticRegression(max_iter=1000)
+Датасет:              SST-2
+Train / test:         2400 / 600
+
+macro F1: 0.8630
+
+Classification report:
+              precision    recall  f1-score   support
+
+    negative       0.85      0.84      0.85       265
+    positive       0.88      0.88      0.88       335
+
+    accuracy                           0.86       600
+   macro avg       0.86      0.86      0.86       600
+weighted avg       0.86      0.86      0.86       600
