@@ -19,6 +19,7 @@ fine-tuned модели было честным — на одной и той ж
 
 from __future__ import annotations
 
+import copy
 import random
 from dataclasses import dataclass, field
 
@@ -203,6 +204,20 @@ class TrainingHistory:
         return max(self.val_f1) if self.val_f1 else 0.0
 
     @property
+    def best_epoch(self) -> int:
+        """Номер (с 1) эпохи с лучшей val F1; 0, если истории нет."""
+        if not self.val_f1:
+            return 0
+        return max(range(len(self.val_f1)), key=self.val_f1.__getitem__) + 1
+
+    @property
+    def best_accuracy(self) -> float:
+        """Accuracy на той эпохе, где была лучшая F1."""
+        if not self.val_f1:
+            return 0.0
+        return self.val_accuracy[self.best_epoch - 1]
+
+    @property
     def final_f1(self) -> float:
         return self.val_f1[-1] if self.val_f1 else 0.0
 
@@ -239,6 +254,13 @@ def run_training(
 
     history = TrainingHistory()
 
+    # Чекпоинт лучшей эпохи: качество на валидации не обязано расти
+    # монотонно (эпоха 3 может переобучиться и уступить эпохе 2), поэтому
+    # запоминаем веса той эпохи, где val F1 максимальна, и в конце
+    # возвращаем именно их — а не последнее состояние.
+    best_f1 = -1.0
+    best_state: dict | None = None
+
     for epoch in range(num_epochs):
         train_loss = train_epoch(model, train_loader, optimizer, device)
         val_acc, val_f1 = evaluate(model, val_loader, device)
@@ -247,11 +269,23 @@ def run_training(
         history.val_accuracy.append(val_acc)
         history.val_f1.append(val_f1)
 
+        if val_f1 > best_f1:
+            best_f1 = val_f1
+            # deepcopy + .cpu(), чтобы снимок не сдвигался следующей эпохой
+            # и не держал лишнюю память на GPU.
+            best_state = {k: v.detach().cpu().clone() for k, v in model.state_dict().items()}
+
+        marker = "  <- best so far" if val_f1 >= best_f1 else ""
         print(f"Epoch {epoch + 1}/{num_epochs}")
         print(f"Train Loss: {train_loss:.4f}")
         print(f"Val Accuracy: {val_acc:.4f}")
-        print(f"Val F1: {val_f1:.4f}")
+        print(f"Val F1: {val_f1:.4f}{marker}")
         print("-" * 50)
+
+    # Восстанавливаем лучшие веса перед возвратом/сохранением.
+    if best_state is not None:
+        model.load_state_dict(best_state)
+        print(f"Восстановлены веса лучшей эпохи: {history.best_epoch} (val F1={history.best_f1:.4f})")
 
     return model, history
 
@@ -271,23 +305,29 @@ def save_metrics(
     path: str = "fine_tuned_results.txt",
     baseline_f1: float | None = None,
 ) -> None:
-    """Сохраняет метрики дообучения в текстовый файл."""
+    """Сохраняет метрики дообучения в текстовый файл.
+
+    На диск сохраняется модель лучшей эпохи (см. run_training), поэтому
+    здесь как итоговые фигурируют метрики именно лучшей эпохи, а не
+    последней.
+    """
     lines = [
         "Fine-tuning DistilBERT (День 5)",
         "=" * 45,
-        f"Final Validation F1: {history.final_f1:.4f}",
-        f"Final Validation Accuracy: {history.final_accuracy:.4f}",
-        f"Best Validation F1: {history.best_f1:.4f}",
+        f"Saved model — epoch {history.best_epoch} (лучшая по val F1)",
+        f"Validation F1: {history.best_f1:.4f}",
+        f"Validation Accuracy: {history.best_accuracy:.4f}",
         "",
         "По эпохам:",
     ]
     for i, (loss, acc, f1) in enumerate(
         zip(history.train_loss, history.val_accuracy, history.val_f1), start=1
     ):
-        lines.append(f"  epoch {i}: loss={loss:.4f}  acc={acc:.4f}  f1={f1:.4f}")
+        best_mark = "  <- сохранена" if i == history.best_epoch else ""
+        lines.append(f"  epoch {i}: loss={loss:.4f}  acc={acc:.4f}  f1={f1:.4f}{best_mark}")
 
     if baseline_f1 is not None:
-        delta = history.final_f1 - baseline_f1
+        delta = history.best_f1 - baseline_f1
         lines += [
             "",
             f"Baseline (День 4, замороженная модель): {baseline_f1:.4f}",

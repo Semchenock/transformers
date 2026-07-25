@@ -1,2 +1,13 @@
-Final Validation F1: 0.9204
-Final Validation Accuracy: 0.9217
+Fine-tuning DistilBERT (День 5)
+=============================================
+Saved model — epoch 2 (лучшая по val F1)
+Validation F1: 0.9106
+Validation Accuracy: 0.9117
+
+По эпохам:
+  epoch 1: loss=0.4660  acc=0.8850  f1=0.8826
+  epoch 2: loss=0.2110  acc=0.9117  f1=0.9106  <- сохранена
+  epoch 3: loss=0.0819  acc=0.9067  f1=0.9059
+
+Baseline (День 4, замороженная модель): 0.8630
+Прирост от fine-tuning: +0.0476

@@ -31,5 +31,6 @@ models/
 # Generated attention heatmaps
 attention_*.png
 
-# Fine-tuned model weights (~250 MB)
-fine_tuned_model/
+# Fine-tuned model weights (~250 MB) хранятся в репозитории через Git LFS
+# (см. .gitattributes). Раскомментируйте, если не хотите тянуть 256 МБ:
+# fine_tuned_model/

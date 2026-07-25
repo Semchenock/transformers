@@ -6,13 +6,13 @@
 -------------------------------------------------------------------
 TF-IDF + LogReg                 0.7215    0.7367      158         —
 Заморожен BERT + LogReg         0.8630    0.8650       81   +0.1415
-Fine-tuned BERT                 0.9204    0.9217       47   +0.1989
+Fine-tuned BERT                 0.9106    0.9117       53   +0.1891
 (Δ F1 — прирост относительно «TF-IDF + LogReg»)
 
 Согласие моделей между собой:
   TF-IDF + LogReg vs Заморожен BERT + LogReg: 72.8%
-  TF-IDF + LogReg vs Fine-tuned BERT: 73.8%
-  Заморожен BERT + LogReg vs Fine-tuned BERT: 90.0%
+  TF-IDF + LogReg vs Fine-tuned BERT: 75.2%
+  Заморожен BERT + LogReg vs Fine-tuned BERT: 90.7%
 
 --- TF-IDF + LogReg: classification report ---
               precision    recall  f1-score   support
@@ -39,9 +39,9 @@ weighted avg       0.86      0.86      0.86       600
 --- Fine-tuned BERT: classification report ---
               precision    recall  f1-score   support
 
-    negative       0.92      0.90      0.91       265
-    positive       0.92      0.94      0.93       335
+    negative       0.89      0.91      0.90       265
+    positive       0.93      0.91      0.92       335
 
-    accuracy                           0.92       600
-   macro avg       0.92      0.92      0.92       600
-weighted avg       0.92      0.92      0.92       600
+    accuracy                           0.91       600
+   macro avg       0.91      0.91      0.91       600
+weighted avg       0.91      0.91      0.91       600
