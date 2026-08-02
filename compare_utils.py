@@ -397,7 +397,14 @@ def save_comparison(
 
 
 if __name__ == "__main__":
+    import sys
+
     from tokenization_utils import load_tokenizer
+
+    # На Windows консоль по умолчанию cp1251 и падает на символе Δ из
+    # сводной таблицы — переключаем stdout на UTF-8.
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
 
     test_texts, test_labels = get_test_split()
     print(f"Тестовая выборка: {len(test_texts)} примеров")
@@ -435,9 +442,34 @@ if __name__ == "__main__":
     )
     save_comparison(results)
 
+    # Confusion matrix дообученной модели — основной артефакт задания Дня 7.
+    plot_confusion_matrix(
+        test_labels,
+        y_pred_ft,
+        "Confusion Matrix — Fine-tuned BERT",
+        save_path="confusion_matrix_finetuned.png",
+        show=False,
+    )
+
+    # Сводная матрица по всем трём моделям — для сравнения бок о бок.
+    fig, axes = plt.subplots(1, 3, figsize=(17, 4.8))
+    for ax, (title, y_pred) in zip(
+        axes,
+        [
+            ("TF-IDF + LogReg", y_pred_tfidf),
+            ("Заморожен BERT + LogReg", y_pred_base),
+            ("Fine-tuned BERT", y_pred_ft),
+        ],
+    ):
+        plot_confusion_matrix(test_labels, y_pred, title, ax=ax)
+    plt.tight_layout()
+    plt.savefig("confusion_matrix_comparison.png", dpi=100)
+    plt.close(fig)
+
     print()
     print(summary_table(results))
     print("\nСогласие моделей:")
     for pair, value in results["agreement"].items():
         print(f"  {pair}: {value:.1%}")
-    print("\nСохранено: comparison_results.txt")
+    print("\nСохранено: comparison_results.txt, "
+          "confusion_matrix_finetuned.png, confusion_matrix_comparison.png")
