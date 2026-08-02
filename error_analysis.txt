@@ -14,7 +14,7 @@ False Negatives (сказали negative, было positive): 29
 Средняя уверенность на ошибочных предсказаниях: 0.778
 Ошибок с уверенностью > 0.9: 14 из 53
 
-=== ПРИМЕРЫ FALSE POSITIVES (сказали good, а было bad) ===
+=== ПРИМЕРЫ FALSE POSITIVES (сказали good, а было bad) ===  [24 из 24]
 
 Текст: there is plenty of room for editing , and
 Истинный: negative, Предсказан: positive, уверенность 0.778
@@ -31,7 +31,64 @@ False Negatives (сказали negative, было positive): 29
 Текст: restage the whole thing
 Истинный: negative, Предсказан: positive, уверенность 0.579
 
-=== ПРИМЕРЫ FALSE NEGATIVES (сказали bad, а было good) ===
+Текст: if routine action and jokes like this are your cup of tea
+Истинный: negative, Предсказан: positive, уверенность 0.736
+
+Текст: scary and sad
+Истинный: negative, Предсказан: positive, уверенность 0.564
+
+Текст: peculiarly
+Истинный: negative, Предсказан: positive, уверенность 0.903
+
+Текст: jay russell
+Истинный: negative, Предсказан: positive, уверенность 0.753
+
+Текст: for industrial-model meat freezers
+Истинный: negative, Предсказан: positive, уверенность 0.601
+
+Текст: pure venality --
+Истинный: negative, Предсказан: positive, уверенность 0.969
+
+Текст: 's a bargain-basement european pickup .
+Истинный: negative, Предсказан: positive, уверенность 0.729
+
+Текст: there 's something fishy about a seasonal holiday kids ' movie ... that derives its moment of most convincing emotional gravity from a scene where santa gives gifts to grownups .
+Истинный: negative, Предсказан: positive, уверенность 0.832
+
+Текст: do n't blame eddie murphy but
+Истинный: negative, Предсказан: positive, уверенность 0.854
+
+Текст: standard formula
+Истинный: negative, Предсказан: positive, уверенность 0.502
+
+Текст: by no means a slam-dunk and sure to ultimately disappoint the action fans who will be moved to the edge of their seats by the dynamic first act , it still comes off as a touching , transcendent love story .
+Истинный: negative, Предсказан: positive, уверенность 0.960
+
+Текст: laugh-free lecture
+Истинный: negative, Предсказан: positive, уверенность 0.977
+
+Текст: from the guy-in-a-dress genre
+Истинный: negative, Предсказан: positive, уверенность 0.786
+
+Текст: between presiding over the end of cinema as we know it and another night of delightful hand shadows
+Истинный: negative, Предсказан: positive, уверенность 0.906
+
+Текст: the broiling sun for a good three days
+Истинный: negative, Предсказан: positive, уверенность 0.931
+
+Текст: , director chris columbus takes a hat-in-hand approach to rowling that stifles creativity and allows the film to drag on for nearly three hours .
+Истинный: negative, Предсказан: positive, уверенность 0.864
+
+Текст: in the media
+Истинный: negative, Предсказан: positive, уверенность 0.936
+
+Текст: , mad love looks better than it feels .
+Истинный: negative, Предсказан: positive, уверенность 0.885
+
+Текст: 's about as convincing as any other arnie musclefest ,
+Истинный: negative, Предсказан: positive, уверенность 0.846
+
+=== ПРИМЕРЫ FALSE NEGATIVES (сказали bad, а было good) ===  [29 из 29]
 
 Текст: it will do so in a way that does n't make you feel like a sucker
 Истинный: positive, Предсказан: negative, уверенность 0.644
@@ -48,8 +105,80 @@ False Negatives (сказали negative, было positive): 29
 Текст: the last metro )
 Истинный: positive, Предсказан: negative, уверенность 0.907
 
+Текст: like many western action films , this thriller is too loud and thoroughly overbearing , but its heartfelt concern about north korea 's recent past and south korea 's future adds a much needed moral weight .
+Истинный: positive, Предсказан: negative, уверенность 0.603
 
-=== ТРУДНЫЕ ПРИМЕРЫ (ошиблись все модели): 24 ===
+Текст: that most frightening of all movies
+Истинный: positive, Предсказан: negative, уверенность 0.926
+
+Текст: to watch too many barney videos
+Истинный: positive, Предсказан: negative, уверенность 0.982
+
+Текст: ` red shoe diaries
+Истинный: positive, Предсказан: negative, уверенность 0.526
+
+Текст: as an intellectual exercise -- an unpleasant debate that 's been given the drive of a narrative and that 's been acted out -- the believer is nothing less than a provocative piece of work
+Истинный: positive, Предсказан: negative, уверенность 0.870
+
+Текст: 's a part of us that can not help be entertained by the sight of someone getting away with something
+Истинный: positive, Предсказан: negative, уверенность 0.555
+
+Текст: too good to be bad
+Истинный: positive, Предсказан: negative, уверенность 0.979
+
+Текст: may be why it 's so successful at lodging itself in the brain
+Истинный: positive, Предсказан: negative, уверенность 0.622
+
+Текст: has any sting to it
+Истинный: positive, Предсказан: negative, уверенность 0.716
+
+Текст: the source material movie
+Истинный: positive, Предсказан: negative, уверенность 0.565
+
+Текст: captured
+Истинный: positive, Предсказан: negative, уверенность 0.788
+
+Текст: ineffable
+Истинный: positive, Предсказан: negative, уверенность 0.868
+
+Текст: george and lucy 's most obvious differences to ignite sparks
+Истинный: positive, Предсказан: negative, уверенность 0.888
+
+Текст: power-lunchers
+Истинный: positive, Предсказан: negative, уверенность 0.521
+
+Текст: challenges perceptions of guilt and innocence , of good guys and bad , and asks us whether a noble end can justify evil means
+Истинный: positive, Предсказан: negative, уверенность 0.743
+
+Текст: take any 12-year-old boy to see this picture , and he 'll be your slave for a year .
+Истинный: positive, Предсказан: negative, уверенность 0.712
+
+Текст: sirk
+Истинный: positive, Предсказан: negative, уверенность 0.715
+
+Текст: is , more often then
+Истинный: positive, Предсказан: negative, уверенность 0.732
+
+Текст: the stuff of lurid melodrama
+Истинный: positive, Предсказан: negative, уверенность 0.962
+
+Текст: an unflinching ,
+Истинный: positive, Предсказан: negative, уверенность 0.562
+
+Текст: as rogue cia assassins working for chris cooper 's agency boss close in on the resourceful amnesiac
+Истинный: positive, Предсказан: negative, уверенность 0.784
+
+Текст: not a bad way to spend an hour or two
+Истинный: positive, Предсказан: negative, уверенность 0.841
+
+Текст: guessing at almost every turn
+Истинный: positive, Предсказан: negative, уверенность 0.596
+
+Текст: made up for its rather slow beginning
+Истинный: positive, Предсказан: negative, уверенность 0.941
+
+
+=== ТРУДНЫЕ ПРИМЕРЫ (ошиблись все модели): 24 ===  [показано 24]
 
 Текст: bargain-basement
 Истинный: negative
@@ -65,3 +194,69 @@ False Negatives (сказали negative, было positive): 29
 
 Текст: to watch too many barney videos
 Истинный: positive
+
+Текст: as an intellectual exercise -- an unpleasant debate that 's been given the drive of a narrative and that 's been acted out -- the believer is nothing less than a provocative piece of work
+Истинный: positive
+
+Текст: jay russell
+Истинный: negative
+
+Текст: too good to be bad
+Истинный: positive
+
+Текст: may be why it 's so successful at lodging itself in the brain
+Истинный: positive
+
+Текст: has any sting to it
+Истинный: positive
+
+Текст: pure venality --
+Истинный: negative
+
+Текст: 's a bargain-basement european pickup .
+Истинный: negative
+
+Текст: there 's something fishy about a seasonal holiday kids ' movie ... that derives its moment of most convincing emotional gravity from a scene where santa gives gifts to grownups .
+Истинный: negative
+
+Текст: do n't blame eddie murphy but
+Истинный: negative
+
+Текст: by no means a slam-dunk and sure to ultimately disappoint the action fans who will be moved to the edge of their seats by the dynamic first act , it still comes off as a touching , transcendent love story .
+Истинный: negative
+
+Текст: as rogue cia assassins working for chris cooper 's agency boss close in on the resourceful amnesiac
+Истинный: positive
+
+Текст: laugh-free lecture
+Истинный: negative
+
+Текст: from the guy-in-a-dress genre
+Истинный: negative
+
+Текст: between presiding over the end of cinema as we know it and another night of delightful hand shadows
+Истинный: negative
+
+Текст: the broiling sun for a good three days
+Истинный: negative
+
+Текст: not a bad way to spend an hour or two
+Истинный: positive
+
+Текст: , director chris columbus takes a hat-in-hand approach to rowling that stifles creativity and allows the film to drag on for nearly three hours .
+Истинный: negative
+
+Текст: 's about as convincing as any other arnie musclefest ,
+Истинный: negative
+
+Текст: made up for its rather slow beginning
+Истинный: positive
+
+
+=== НАБЛЮДЕНИЯ ===
+1. Ошибок 53 из 600 (8.8%): FP=24, FN=29 — перекос в сторону ложного negative.
+2. Длина текста ошибки не объясняет: средняя длина ошибочных (10.0 слов) почти совпадает со средней по всей выборке (9.3 слов).
+3. 14 из 53 ошибок сделаны с уверенностью > 0.9 — модель бывает уверена и неправа одновременно, поэтому отсечь ошибки простым порогом нельзя, нужна калибровка.
+4. Разрыв уверенности невелик: 0.930 на верных против 0.778 на ошибочных.
+5. 24 примеров провалили все три модели сразу. Когда ошибаются все — дело обычно не в конкретной модели, а в тексте: нужно доменное знание, идиомы/ирония или фрагмент вовсе без тональности.
+6. SST-2 собран из фраз-фрагментов рецензий, и метка унаследована из контекста, которого в самом фрагменте нет. Часть ошибок неустранима — это потолок разметки, а не модели.

@@ -128,15 +128,70 @@ def find_hard_examples(
     return df[mask]
 
 
+def build_observations(
+    stats: dict,
+    df: pd.DataFrame,
+    hard_examples: pd.DataFrame | None = None,
+) -> list[str]:
+    """Формирует выводы о паттернах ошибок прямо из посчитанной статистики.
+
+    Все числа берутся из stats/df, а не зашиты в текст, поэтому при
+    повторном запуске на другой версии модели наблюдения не устаревают.
+    """
+    errors = stats["n_errors"]
+    skew = "ложного positive" if stats["n_fp"] >= stats["n_fn"] else "ложного negative"
+
+    obs = [
+        f"Ошибок {errors} из {stats['total']} ({errors / stats['total']:.1%}): "
+        f"FP={stats['n_fp']}, FN={stats['n_fn']} — перекос в сторону {skew}.",
+        f"Длина текста ошибки не объясняет: средняя длина ошибочных "
+        f"({stats['mean_words_errors']:.1f} слов) почти совпадает со средней по "
+        f"всей выборке ({stats['mean_words_all']:.1f} слов).",
+    ]
+
+    if "conf_correct" in stats:
+        obs.append(
+            f"{stats['n_confident_errors']} из {errors} ошибок сделаны с "
+            f"уверенностью > 0.9 — модель бывает уверена и неправа одновременно, "
+            f"поэтому отсечь ошибки простым порогом нельзя, нужна калибровка."
+        )
+        obs.append(
+            f"Разрыв уверенности невелик: {stats['conf_correct']:.3f} на верных "
+            f"против {stats['conf_errors']:.3f} на ошибочных."
+        )
+
+    if hard_examples is not None and len(hard_examples):
+        obs.append(
+            f"{len(hard_examples)} примеров провалили все три модели сразу. "
+            "Когда ошибаются все — дело обычно не в конкретной модели, а в тексте: "
+            "нужно доменное знание, идиомы/ирония или фрагмент вовсе без тональности."
+        )
+
+    obs.append(
+        "SST-2 собран из фраз-фрагментов рецензий, и метка унаследована из "
+        "контекста, которого в самом фрагменте нет. Часть ошибок неустранима — "
+        "это потолок разметки, а не модели."
+    )
+    return obs
+
+
 def save_analysis(
     df: pd.DataFrame,
     stats: dict,
     path: str = "error_analysis.txt",
-    n_examples: int = 5,
+    n_examples: int | None = 5,
     hard_examples: pd.DataFrame | None = None,
     observations: list[str] | None = None,
 ) -> None:
-    """Сохраняет анализ ошибок в текстовый файл."""
+    """Сохраняет анализ ошибок в текстовый файл.
+
+    Args:
+        n_examples: сколько примеров FP/FN и трудных случаев выписывать.
+            None — выписать ВСЕ (полный список ошибок), а не только первые.
+    """
+
+    def take(subset: pd.DataFrame) -> pd.DataFrame:
+        return subset if n_examples is None else subset.head(n_examples)
     lines = [
         "=== АНАЛИЗ ОШИБОК ===",
         "",
@@ -166,8 +221,9 @@ def save_analysis(
         ("=== ПРИМЕРЫ FALSE POSITIVES (сказали good, а было bad) ===", stats["fp"]),
         ("=== ПРИМЕРЫ FALSE NEGATIVES (сказали bad, а было good) ===", stats["fn"]),
     ]:
-        lines += ["", title]
-        for _, row in subset.head(n_examples).iterrows():
+        shown = take(subset)
+        lines += ["", f"{title}  [{len(shown)} из {len(subset)}]"]
+        for _, row in shown.iterrows():
             conf = f", уверенность {row['confidence']:.3f}" if "confidence" in row else ""
             lines.append(f"\nТекст: {row['text']}")
             lines.append(
@@ -176,12 +232,14 @@ def save_analysis(
             )
 
     if hard_examples is not None and len(hard_examples):
+        shown = take(hard_examples)
         lines += [
             "",
             "",
-            f"=== ТРУДНЫЕ ПРИМЕРЫ (ошиблись все модели): {len(hard_examples)} ===",
+            f"=== ТРУДНЫЕ ПРИМЕРЫ (ошиблись все модели): {len(hard_examples)} ===  "
+            f"[показано {len(shown)}]",
         ]
-        for _, row in hard_examples.head(n_examples).iterrows():
+        for _, row in shown.iterrows():
             lines.append(f"\nТекст: {row['text']}")
             lines.append(f"Истинный: {LABEL_NAMES[row['true_label']]}")
 
@@ -240,5 +298,10 @@ if __name__ == "__main__":
     print()
     print(length_buckets(df))
 
-    save_analysis(df, stats, hard_examples=hard)
-    print("\nСохранено: error_analysis.txt")
+    observations = build_observations(stats, df, hard_examples=hard)
+    # n_examples=None — выписываем в отчёт ВСЕ ошибочные примеры (все FP и FN),
+    # а не только первые пять.
+    save_analysis(
+        df, stats, hard_examples=hard, observations=observations, n_examples=None
+    )
+    print("\nСохранено: error_analysis.txt (все ошибки, трудные примеры и наблюдения)")
